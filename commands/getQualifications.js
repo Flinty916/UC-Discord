@@ -13,24 +13,24 @@ const http = axios.create({
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('ranks')
-        .setDescription('Fetches all Community Ranks.'),
+        .setName('qualifications')
+        .setDescription('Fetches all Community Qualifications.'),
     async execute(interaction) {
-        let response = await http.get(`discord/${interaction.guild.id}/ranks`)
+        let response = await http.get(`discord/${interaction.guild.id}/qualifications`)
         if(response.status === 200) {
-            let ranks = response.data.ranks
+            let qualifications = response.data.qualifications
             let community = response.data.community
-            ranks = ranks.sort((a, b) => {
+            qualifications = qualifications.sort((a, b) => {
                 return a.displayOrder - b.displayOrder
             })
             let embeds = []
-            for(let rank of ranks) {
+            for(let qualification of qualifications) {
                 embeds.push(new MessageEmbed()
                     .setColor(embed_color)
-                    .setTitle(rank.name)
-                    .setURL(`https://${community.primaryUrl}/ranks/${rank.id}`)
-                    .setDescription(rank.description)
-                    .setThumbnail(rank.image.path)
+                    .setTitle(qualification.name)
+                    .setURL(`https://${community.primaryUrl}/qualifications/${qualification.id}`)
+                    .setDescription(qualification.description)
+                    .setThumbnail(qualification.image.path)
                     .setTimestamp()
                     .setFooter({ text: `${community.name} (${community.abbreviation})` }))
             }
@@ -40,7 +40,7 @@ module.exports = {
             interaction.reply({content: "Done! Please Wait...", ephemeral: true})
         } else {
             console.log(error)
-            return interaction.reply('Failed to fetch Ranks!')
+            return interaction.reply('Failed to find Qualification!')
         }
     },
 };

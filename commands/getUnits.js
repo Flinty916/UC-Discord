@@ -13,24 +13,24 @@ const http = axios.create({
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('ranks')
-        .setDescription('Fetches all Community Ranks.'),
+        .setName('units')
+        .setDescription('Fetches all Community Units.'),
     async execute(interaction) {
-        let response = await http.get(`discord/${interaction.guild.id}/ranks`)
+        let response = await http.get(`discord/${interaction.guild.id}/units`)
         if(response.status === 200) {
-            let ranks = response.data.ranks
+            let units = response.data.units
             let community = response.data.community
-            ranks = ranks.sort((a, b) => {
+            units = units.sort((a, b) => {
                 return a.displayOrder - b.displayOrder
             })
             let embeds = []
-            for(let rank of ranks) {
+            for(let unit of units) {
                 embeds.push(new MessageEmbed()
                     .setColor(embed_color)
-                    .setTitle(rank.name)
-                    .setURL(`https://${community.primaryUrl}/ranks/${rank.id}`)
-                    .setDescription(rank.description)
-                    .setThumbnail(rank.image.path)
+                    .setTitle(`${unit.name}`)
+                    .setURL(`https://${community.primaryUrl}/units/${unit.id}`)
+                    .setDescription(`${unit.callsign}, Member Count: ${unit.player_count}`)
+                    .setThumbnail((unit.image) ? unit.image.path : null)
                     .setTimestamp()
                     .setFooter({ text: `${community.name} (${community.abbreviation})` }))
             }
@@ -40,7 +40,7 @@ module.exports = {
             interaction.reply({content: "Done! Please Wait...", ephemeral: true})
         } else {
             console.log(error)
-            return interaction.reply('Failed to fetch Ranks!')
+            return interaction.reply('Failed to find Unit!')
         }
     },
 };

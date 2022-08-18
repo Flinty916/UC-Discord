@@ -1,5 +1,7 @@
 {
-    "token": "",
-    "baseUrl": "https://beta.unitcommander.co.uk/api",
-    "communityId": 122
+    "uc_token": "secret",
+    "bot_token":  "secret",
+    "baseUrl": "https://app.unitcommander.co.uk/api",
+    "client_id": "bot_id",
+    "embed_color": 1827734
 }

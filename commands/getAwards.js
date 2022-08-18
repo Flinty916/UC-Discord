@@ -13,24 +13,24 @@ const http = axios.create({
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('ranks')
-        .setDescription('Fetches all Community Ranks.'),
+        .setName('awards')
+        .setDescription('Fetches all Community Awards.'),
     async execute(interaction) {
-        let response = await http.get(`discord/${interaction.guild.id}/ranks`)
+        let response = await http.get(`discord/${interaction.guild.id}/awards`)
         if(response.status === 200) {
-            let ranks = response.data.ranks
+            let awards = response.data.awards
             let community = response.data.community
-            ranks = ranks.sort((a, b) => {
+            awards = awards.sort((a, b) => {
                 return a.displayOrder - b.displayOrder
             })
             let embeds = []
-            for(let rank of ranks) {
+            for(let award of awards) {
                 embeds.push(new MessageEmbed()
                     .setColor(embed_color)
-                    .setTitle(rank.name)
-                    .setURL(`https://${community.primaryUrl}/ranks/${rank.id}`)
-                    .setDescription(rank.description)
-                    .setThumbnail(rank.image.path)
+                    .setTitle(award.name)
+                    .setURL(`https://${community.primaryUrl}/awards/${award.id}`)
+                    .setDescription(award.description)
+                    .setThumbnail(award.image.path)
                     .setTimestamp()
                     .setFooter({ text: `${community.name} (${community.abbreviation})` }))
             }
@@ -40,7 +40,7 @@ module.exports = {
             interaction.reply({content: "Done! Please Wait...", ephemeral: true})
         } else {
             console.log(error)
-            return interaction.reply('Failed to fetch Ranks!')
+            return interaction.reply('Failed to fetch Awards!')
         }
     },
 };
